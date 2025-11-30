@@ -185,7 +185,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
             </p>
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
-            <div className="rounded-full bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-800">
+            <div className="rounded-full bg-[#8359ee]/10 px-4 py-2 text-sm font-medium text-[#8359ee]">
               {step.time_estimate}
             </div>
             <div className="text-sm font-semibold text-black">
@@ -202,7 +202,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
           </div>
           <div className="h-3 w-full rounded-full bg-gray-200 overflow-hidden">
             <div
-              className="h-full rounded-full bg-indigo-600 transition-all duration-300"
+              className="h-full rounded-full bg-[#8359ee] transition-all duration-300"
               style={{ width: `${(completedCount / totalRequired) * 100}%` }}
             />
           </div>
@@ -247,7 +247,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                         updateField('logo_url', file.name)
                       }
                     }}
-                    className="mt-1 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="mt-1 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   />
                   <p className="mt-2 text-sm text-gray-600">
                     Upload your logo file (PNG, JPG, or SVG)
@@ -272,7 +272,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                           value={color}
                           onChange={(e) => updateArrayItem('brand_colors', index, e.target.value)}
                           placeholder="#000000"
-                          className="flex-1 rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                          className="flex-1 rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                         />
                       </div>
                     ))}
@@ -294,7 +294,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                       const files = Array.from(e.target.files || [])
                       updateField('brand_photos', files.map(f => f.name))
                     }}
-                    className="mt-1 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="mt-1 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   />
                   <p className="mt-2 text-sm text-gray-600">
                     Upload multiple photos that represent your brand
@@ -313,7 +313,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                           value={site}
                           onChange={(e) => updateArrayItem('inspiration_sites', index, e.target.value)}
                           placeholder="https://example.com"
-                          className="flex-1 rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                          className="flex-1 rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                         />
                         {formData.inspiration_sites.length > 1 && (
                           <button
@@ -330,7 +330,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                   <button
                     type="button"
                     onClick={() => addArrayItem('inspiration_sites')}
-                    className="mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                    className="mt-3 text-sm font-medium text-[#8359ee] hover:text-[#8359ee]/80 transition-colors"
                   >
                     + Add another site
                   </button>
@@ -353,7 +353,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                     value={formData.ideal_client_description}
                     onChange={(e) => updateField('ideal_client_description', e.target.value)}
                     rows={4}
-                    className="mt-1 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="mt-1 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="Describe your ideal client..."
                   />
                 </div>
@@ -370,7 +370,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                         value={problem}
                         onChange={(e) => updateArrayItem('top_3_problems', index, e.target.value)}
                         placeholder={`Problem ${index + 1}`}
-                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                       />
                     ))}
                   </div>
@@ -388,7 +388,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                         value={result}
                         onChange={(e) => updateArrayItem('top_3_results', index, e.target.value)}
                         placeholder={`Result ${index + 1}`}
-                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                       />
                     ))}
                   </div>
@@ -406,14 +406,14 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                         onChange={(e) => updateArrayItem('testimonials', index, e.target.value)}
                         rows={3}
                         placeholder="Testimonial text..."
-                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                       />
                     ))}
                   </div>
                   <button
                     type="button"
                     onClick={() => addArrayItem('testimonials')}
-                    className="mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                    className="mt-3 text-sm font-medium text-[#8359ee] hover:text-[#8359ee]/80 transition-colors"
                   >
                     + Add another testimonial
                   </button>
@@ -434,7 +434,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                           value={link}
                           onChange={(e) => updateArrayItem('review_links', index, e.target.value)}
                           placeholder="https://..."
-                          className="flex-1 rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                          className="flex-1 rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                         />
                         {formData.review_links.length > 1 && (
                           <button
@@ -451,7 +451,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                   <button
                     type="button"
                     onClick={() => addArrayItem('review_links')}
-                    className="mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                    className="mt-3 text-sm font-medium text-[#8359ee] hover:text-[#8359ee]/80 transition-colors"
                   >
                     + Add another review link
                   </button>
@@ -478,7 +478,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                         value={word}
                         onChange={(e) => updateArrayItem('voice_words', index, e.target.value)}
                         placeholder={`Voice word ${index + 1}`}
-                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                       />
                     ))}
                   </div>
@@ -495,7 +495,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
                     value={formData.words_to_avoid}
                     onChange={(e) => updateField('words_to_avoid', e.target.value)}
                     rows={3}
-                    className="mt-1 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="mt-1 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="List words or phrases to avoid..."
                   />
                 </div>
@@ -505,7 +505,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
 
           {/* Right Column - Guidance */}
           <div className="space-y-6">
-            <div className="rounded-lg bg-blue-50 p-6 border-2 border-blue-100">
+            <div className="rounded-lg bg-[#8359ee]/10 p-6 border-2 border-[#8359ee]/20">
               <h3 className="text-base font-bold text-black mb-3">Why this step matters</h3>
               <p className="text-sm text-black leading-relaxed">
                 This is where your brand comes to life. Your visuals, voice, and proof help us create a site that truly represents you.
@@ -553,7 +553,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
             type="button"
             onClick={() => handleSave(true)}
             disabled={isSaving || !isComplete}
-            className="rounded-full bg-indigo-600 px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-indigo-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600 hover:shadow-lg transform hover:-translate-y-0.5"
+            className="rounded-full bg-[#8359ee] px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#8359ee]/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#8359ee] hover:shadow-lg transform hover:-translate-y-0.5"
           >
             {isSaving ? 'Saving...' : 'Save and continue to Step 3'}
           </button>

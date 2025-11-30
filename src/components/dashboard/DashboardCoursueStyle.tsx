@@ -31,7 +31,7 @@ export default function DashboardCoursueStyle({ project }: DashboardCoursueStyle
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      bgColor: 'bg-indigo-500',
+      bgColor: 'bg-[#8359ee]/100',
       textColor: 'text-white'
     },
     {
@@ -53,7 +53,7 @@ export default function DashboardCoursueStyle({ project }: DashboardCoursueStyle
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
         </svg>
       ),
-      bgColor: 'bg-blue-500',
+      bgColor: 'bg-[#8359ee]/100',
       textColor: 'text-white'
     }
   ]
@@ -198,7 +198,7 @@ export default function DashboardCoursueStyle({ project }: DashboardCoursueStyle
                     >
                       <div className="aspect-video bg-gradient-to-br from-indigo-100 to-purple-100 relative">
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-16 h-16 rounded-xl bg-indigo-600 flex items-center justify-center">
+                          <div className="w-16 h-16 rounded-xl bg-[#8359ee] flex items-center justify-center">
                             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
@@ -211,7 +211,7 @@ export default function DashboardCoursueStyle({ project }: DashboardCoursueStyle
                         </button>
                       </div>
                       <div className="p-4">
-                        <span className="inline-block px-2 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-semibold mb-2">
+                        <span className="inline-block px-2 py-1 rounded-full bg-[#8359ee]/10 text-indigo-700 text-xs font-semibold mb-2">
                           STEP {item.stepNumber}
                         </span>
                         <h3 className="text-base font-bold text-black mb-1 line-clamp-2">
@@ -237,7 +237,7 @@ export default function DashboardCoursueStyle({ project }: DashboardCoursueStyle
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-black">Your Tasks</h2>
-                <Link href={project?.kit_type === 'LAUNCH' ? '/launch-kit' : '/growth-kit'} className="text-sm font-semibold text-indigo-600 hover:text-indigo-700">
+                <Link href={project?.kit_type === 'LAUNCH' ? '/launch-kit' : '/growth-kit'} className="text-sm font-semibold text-[#8359ee] hover:text-[#8359ee]/80">
                   See all
                 </Link>
               </div>
@@ -260,7 +260,7 @@ export default function DashboardCoursueStyle({ project }: DashboardCoursueStyle
                               <div className="text-sm font-medium text-black">{task.title}</div>
                             </td>
                             <td className="px-4 py-4">
-                              <span className="inline-block px-2 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-semibold">
+                              <span className="inline-block px-2 py-1 rounded-full bg-[#8359ee]/10 text-indigo-700 text-xs font-semibold">
                                 {task.type}
                               </span>
                             </td>
@@ -270,7 +270,7 @@ export default function DashboardCoursueStyle({ project }: DashboardCoursueStyle
                             <td className="px-4 py-4">
                               <button
                                 onClick={() => router.push(project?.kit_type === 'LAUNCH' ? '/launch-kit/build-tracker' : '/growth-kit/build-tracker')}
-                                className="w-8 h-8 rounded-full bg-indigo-600 hover:bg-indigo-700 flex items-center justify-center transition-colors"
+                                className="w-8 h-8 rounded-full bg-[#8359ee] hover:bg-[#8359ee]/90 flex items-center justify-center transition-colors"
                               >
                                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -325,7 +325,7 @@ export default function DashboardCoursueStyle({ project }: DashboardCoursueStyle
                       fill="none"
                       strokeDasharray={`${2 * Math.PI * 40}`}
                       strokeDashoffset={`${2 * Math.PI * 40 * (1 - (project?.onboarding_percent || 0) / 100)}`}
-                      className="text-indigo-600 transition-all duration-500"
+                      className="text-[#8359ee] transition-all duration-500"
                       strokeLinecap="round"
                     />
                   </svg>
@@ -363,7 +363,7 @@ export default function DashboardCoursueStyle({ project }: DashboardCoursueStyle
                         </div>
                         <div className="h-2 w-full rounded-full bg-gray-200 overflow-hidden">
                           <div
-                            className="h-full rounded-full bg-indigo-600 transition-all duration-500"
+                            className="h-full rounded-full bg-[#8359ee] transition-all duration-500"
                             style={{ width: `${progress}%` }}
                           />
                         </div>
@@ -392,7 +392,7 @@ export default function DashboardCoursueStyle({ project }: DashboardCoursueStyle
                 ].map((member, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <div className="relative">
-                      <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-[#8359ee]/10 flex items-center justify-center">
                         <span className="text-xs font-semibold text-indigo-700">{member.avatar}</span>
                       </div>
                       <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white flex items-center justify-center">
@@ -405,13 +405,13 @@ export default function DashboardCoursueStyle({ project }: DashboardCoursueStyle
                       <p className="text-sm font-semibold text-black">{member.name}</p>
                       <p className="text-xs text-gray-600">{member.role}</p>
                     </div>
-                    <button className="px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold hover:bg-indigo-100 transition-colors">
+                    <button className="px-3 py-1.5 rounded-full bg-[#8359ee]/10 text-indigo-700 text-xs font-semibold hover:bg-[#8359ee]/10 transition-colors">
                       Contact
                     </button>
                   </div>
                 ))}
               </div>
-              <button className="mt-4 w-full text-center text-sm font-semibold text-indigo-600 hover:text-indigo-700 py-2">
+              <button className="mt-4 w-full text-center text-sm font-semibold text-[#8359ee] hover:text-[#8359ee]/80 py-2">
                 See All
               </button>
             </div>

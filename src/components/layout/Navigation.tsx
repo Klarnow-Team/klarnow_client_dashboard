@@ -52,7 +52,7 @@ export default function Navigation() {
                     href={item.href}
                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       isActive
-                        ? 'bg-indigo-100 text-indigo-700'
+                        ? 'bg-[#8359ee]/10 text-[#8359ee]'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >

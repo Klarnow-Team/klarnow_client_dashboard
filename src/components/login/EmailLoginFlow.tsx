@@ -176,7 +176,7 @@ export default function EmailLoginFlow() {
           {step === 'loading' && (
             <div className="flex flex-col items-center gap-4 text-center">
               <div className="text-black">Looking up your account...</div>
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#8359ee]"></div>
             </div>
           )}
 
@@ -268,7 +268,7 @@ export default function EmailLoginFlow() {
                 <button
                   type="button"
                   onClick={handleBack}
-                  className="text-sm text-indigo-600 hover:text-indigo-500"
+                  className="text-sm text-[#8359ee] hover:text-[#8359ee]/80"
                 >
                   Back to email
                 </button>

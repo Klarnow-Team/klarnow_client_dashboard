@@ -61,7 +61,7 @@ export default function InitializeProjectPrompt() {
           <select
             value={kitType}
             onChange={(e) => setKitType(e.target.value as 'LAUNCH' | 'GROWTH')}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8359ee] focus:ring-[#8359ee] sm:text-sm"
           >
             <option value="">Select a kit...</option>
             <option value="LAUNCH">Launch Kit - 3 page high trust site in 14 days</option>
@@ -72,7 +72,7 @@ export default function InitializeProjectPrompt() {
         <button
           onClick={handleInitialize}
           disabled={isLoading || !kitType}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="rounded-md bg-[#8359ee] px-4 py-2 text-sm font-medium text-white hover:bg-[#8359ee]/90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? 'Initializing...' : 'Start Onboarding'}
         </button>

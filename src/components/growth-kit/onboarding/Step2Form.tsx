@@ -230,7 +230,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
             </p>
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
-            <div className="rounded-full bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-800">
+            <div className="rounded-full bg-[#8359ee]/10 px-4 py-2 text-sm font-medium text-[#8359ee]">
               {step.time_estimate}
             </div>
             <div className="text-sm font-semibold text-black">
@@ -247,7 +247,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
           </div>
           <div className="h-3 w-full rounded-full bg-gray-200 overflow-hidden">
             <div
-              className="h-full rounded-full bg-indigo-600 transition-all duration-300"
+              className="h-full rounded-full bg-[#8359ee] transition-all duration-300"
               style={{ width: `${(completedCount / totalRequired) * 100}%` }}
             />
           </div>
@@ -286,7 +286,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                     value={formData.ideal_client_description}
                     onChange={(e) => updateField('ideal_client_description', e.target.value)}
                     rows={4}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="Describe your ideal client..."
                   />
                 </div>
@@ -303,7 +303,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                         value={pain}
                         onChange={(e) => updateArrayItem('top_5_pains', index, e.target.value)}
                         placeholder={`Pain ${index + 1}`}
-                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                       />
                     ))}
                   </div>
@@ -321,7 +321,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                         value={outcome}
                         onChange={(e) => updateArrayItem('top_5_outcomes', index, e.target.value)}
                         placeholder={`Outcome ${index + 1}`}
-                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                       />
                     ))}
                   </div>
@@ -335,7 +335,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                     value={formData.common_objections}
                     onChange={(e) => updateField('common_objections', e.target.value)}
                     rows={4}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="List common objections..."
                   />
                 </div>
@@ -348,7 +348,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                     value={formData.reasons_choose_you}
                     onChange={(e) => updateField('reasons_choose_you', e.target.value)}
                     rows={3}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="Why do people choose you over alternatives?"
                   />
                 </div>
@@ -361,7 +361,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                     value={formData.competitors_alternatives}
                     onChange={(e) => updateField('competitors_alternatives', e.target.value)}
                     rows={3}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="Who are your main competitors or alternatives?"
                   />
                 </div>
@@ -387,7 +387,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                         value={word}
                         onChange={(e) => updateArrayItem('voice_words', index, e.target.value)}
                         placeholder={`Voice word ${index + 1}`}
-                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                       />
                     ))}
                   </div>
@@ -401,7 +401,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                     value={formData.words_to_avoid}
                     onChange={(e) => updateField('words_to_avoid', e.target.value)}
                     rows={3}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="List words or phrases to avoid..."
                   />
                 </div>
@@ -418,14 +418,14 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                         onChange={(e) => updateArrayItem('testimonials', index, e.target.value)}
                         rows={3}
                         placeholder="Testimonial text..."
-                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                       />
                     ))}
                   </div>
                   <button
                     type="button"
                     onClick={() => addArrayItem('testimonials')}
-                    className="mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                    className="mt-3 text-sm font-medium text-[#8359ee] hover:text-[#8359ee]/80 transition-colors"
                   >
                     + Add another testimonial
                   </button>
@@ -450,7 +450,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                             value={caseStudy.client_type}
                             onChange={(e) => updateCaseStudy(index, 'client_type', e.target.value)}
                             placeholder="Type of client"
-                            className="block w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                            className="block w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                           />
                         </div>
                         <div>
@@ -462,7 +462,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                             onChange={(e) => updateCaseStudy(index, 'problem', e.target.value)}
                             rows={2}
                             placeholder="What problem did they have?"
-                            className="block w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                            className="block w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                           />
                         </div>
                         <div>
@@ -474,7 +474,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                             onChange={(e) => updateCaseStudy(index, 'what_you_did', e.target.value)}
                             rows={2}
                             placeholder="What did you do to help?"
-                            className="block w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                            className="block w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                           />
                         </div>
                         <div>
@@ -486,7 +486,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                             onChange={(e) => updateCaseStudy(index, 'result', e.target.value)}
                             rows={2}
                             placeholder="What was the result?"
-                            className="block w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                            className="block w-full rounded-lg border-2 border-gray-200 px-3 py-2 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                           />
                         </div>
                         {formData.case_studies.length > 3 && (
@@ -505,7 +505,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                     <button
                       type="button"
                       onClick={() => addArrayItem('case_studies')}
-                      className="mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                      className="mt-3 text-sm font-medium text-[#8359ee] hover:text-[#8359ee]/80 transition-colors"
                     >
                       + Add another case study
                     </button>
@@ -527,7 +527,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                           value={link}
                           onChange={(e) => updateArrayItem('review_links', index, e.target.value)}
                           placeholder="https://..."
-                          className="flex-1 rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                          className="flex-1 rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                         />
                         {formData.review_links.length > 1 && (
                           <button
@@ -544,7 +544,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                   <button
                     type="button"
                     onClick={() => addArrayItem('review_links')}
-                    className="mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                    className="mt-3 text-sm font-medium text-[#8359ee] hover:text-[#8359ee]/80 transition-colors"
                   >
                     + Add another review link
                   </button>
@@ -563,14 +563,14 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                         updateField('logos_awards_features', file.name)
                       }
                     }}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   />
                   <textarea
                     value={formData.logos_awards_features}
                     onChange={(e) => updateField('logos_awards_features', e.target.value)}
                     rows={2}
                     placeholder="Optional description..."
-                    className="mt-2 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="mt-2 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                   />
                 </div>
               </div>
@@ -595,7 +595,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                         value={question}
                         onChange={(e) => updateArrayItem('top_10_buyer_questions', index, e.target.value)}
                         placeholder={`Question ${index + 1}`}
-                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                       />
                     ))}
                   </div>
@@ -603,7 +603,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                     <button
                       type="button"
                       onClick={() => addArrayItem('top_10_buyer_questions')}
-                      className="mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                      className="mt-3 text-sm font-medium text-[#8359ee] hover:text-[#8359ee]/80 transition-colors"
                     >
                       + Add another question
                     </button>
@@ -625,7 +625,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                         value={mistake}
                         onChange={(e) => updateArrayItem('common_mistakes_myths', index, e.target.value)}
                         placeholder={`Mistake or myth ${index + 1}`}
-                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                        className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                       />
                     ))}
                   </div>
@@ -639,7 +639,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                     value={formData.topics_to_be_known_for}
                     onChange={(e) => updateField('topics_to_be_known_for', e.target.value)}
                     rows={3}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="List topics you want to be known for..."
                   />
                 </div>
@@ -657,14 +657,14 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                         updateField('existing_lead_magnet', file.name)
                       }
                     }}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   />
                   <input
                     type="url"
                     value={formData.existing_lead_magnet}
                     onChange={(e) => updateField('existing_lead_magnet', e.target.value)}
                     placeholder="Or enter URL..."
-                    className="mt-2 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="mt-2 block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   />
                 </div>
 
@@ -675,7 +675,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
                   <select
                     value={formData.keep_replace_lead_magnet}
                     onChange={(e) => updateField('keep_replace_lead_magnet', e.target.value)}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   >
                     <option value="">Select option...</option>
                     <option value="Keep and improve it">Keep and improve it</option>
@@ -689,7 +689,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
 
           {/* Right Column - Guidance */}
           <div className="space-y-6">
-            <div className="rounded-lg bg-blue-50 p-6 border-2 border-blue-100">
+            <div className="rounded-lg bg-[#8359ee]/10 p-6 border-2 border-[#8359ee]/20">
               <h3 className="text-base font-bold text-black mb-3">Why this step matters</h3>
               <p className="text-sm text-black leading-relaxed">
                 This is where your funnel gets its edge. Your answers here shape the copy, the lead magnet and the emails. The better we understand your clients and proof, the stronger your funnel will convert.
@@ -738,7 +738,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
             type="button"
             onClick={() => handleSave(true)}
             disabled={isSaving || !isComplete}
-            className="rounded-full bg-indigo-600 px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-indigo-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600 hover:shadow-lg transform hover:-translate-y-0.5"
+            className="rounded-full bg-[#8359ee] px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#8359ee]/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#8359ee] hover:shadow-lg transform hover:-translate-y-0.5"
           >
             {isSaving ? 'Saving...' : 'Save and continue to Step 3'}
           </button>

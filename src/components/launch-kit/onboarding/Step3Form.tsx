@@ -124,6 +124,55 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
         const updatedUser = { ...user, onboarding_finished: true }
         localStorage.setItem('user', JSON.stringify(updatedUser))
 
+        // Save all 3 steps to Supabase
+        try {
+          const allSteps = onboardingData.steps || []
+          
+          // Ensure we have all 3 steps
+          if (allSteps.length === 3) {
+            const email = user.email || user.email_address
+            if (!email) {
+              throw new Error('Email not found. Please log in again.')
+            }
+
+            const response = await fetch('/api/onboarding/complete', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email,
+                kit_type: kitType,
+                steps: allSteps.map((s: any) => ({
+                  step_number: s.step_number,
+                  title: s.title,
+                  status: s.status,
+                  required_fields_total: s.required_fields_total,
+                  required_fields_completed: s.required_fields_completed,
+                  time_estimate: s.time_estimate,
+                  fields: s.fields,
+                  started_at: s.started_at,
+                  completed_at: s.completed_at || (s.status === 'DONE' ? new Date().toISOString() : null)
+                }))
+              }),
+            })
+
+            if (!response.ok) {
+              const errorData = await response.json().catch(() => ({ error: 'Failed to save onboarding' }))
+              console.error('Failed to save onboarding to database:', errorData)
+              // Don't block success - data is saved in localStorage
+              // Just log the error
+            } else {
+              console.log('Onboarding saved to database successfully!')
+            }
+          } else {
+            console.warn('Not all 3 steps found in localStorage, skipping database save')
+          }
+        } catch (dbError: any) {
+          console.error('Error saving to database:', dbError)
+          // Don't block success - data is saved in localStorage
+        }
+
         // Show success state only when all fields are complete
         setIsComplete(true)
       } else {
@@ -162,7 +211,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
             </p>
             <Link
               href="/launch-kit"
-              className="inline-block rounded-lg bg-indigo-600 px-8 py-3 text-sm font-semibold text-white shadow-lg hover:bg-indigo-700 transition-all"
+              className="inline-block rounded-lg bg-[#8359ee] px-8 py-3 text-sm font-semibold text-white shadow-lg hover:bg-[#8359ee]/90 transition-all"
             >
               Go to Launch Kit Dashboard
             </Link>
@@ -186,7 +235,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
             </p>
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
-            <div className="rounded-full bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-800">
+            <div className="rounded-full bg-[#8359ee]/10 px-4 py-2 text-sm font-medium text-[#8359ee]">
               {step.time_estimate}
             </div>
             <div className="text-sm font-semibold text-black">
@@ -203,7 +252,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
           </div>
           <div className="h-3 w-full rounded-full bg-gray-200 overflow-hidden">
             <div
-              className="h-full rounded-full bg-indigo-600 transition-all duration-300"
+              className="h-full rounded-full bg-[#8359ee] transition-all duration-300"
               style={{ width: `${(completedCount / 3) * 100}%` }}
             />
           </div>
@@ -231,7 +280,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
                   <select
                     value={formData.domain_provider}
                     onChange={(e) => updateField('domain_provider', e.target.value)}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   >
                     <option value="">Select domain provider...</option>
                     <option value="GoDaddy">GoDaddy</option>
@@ -251,7 +300,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
                     value={formData.existing_site_platform}
                     onChange={(e) => updateField('existing_site_platform', e.target.value)}
                     placeholder="e.g., WordPress, Squarespace, etc."
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   />
                 </div>
 
@@ -263,7 +312,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
                     value={formData.how_share_access}
                     onChange={(e) => updateField('how_share_access', e.target.value)}
                     rows={4}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="Describe how you'll share access credentials..."
                   />
                 </div>
@@ -277,7 +326,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
                     value={formData.contact_form_email}
                     onChange={(e) => updateField('contact_form_email', e.target.value)}
                     placeholder="contact@yourdomain.com"
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   />
                 </div>
 
@@ -290,7 +339,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
                     value={formData.privacy_terms_link}
                     onChange={(e) => updateField('privacy_terms_link', e.target.value)}
                     placeholder="https://..."
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   />
                 </div>
               </div>
@@ -299,7 +348,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
 
           {/* Right Column - Guidance */}
           <div className="space-y-6">
-            <div className="rounded-lg bg-blue-50 p-6 border-2 border-blue-100">
+            <div className="rounded-lg bg-[#8359ee]/10 p-6 border-2 border-[#8359ee]/20">
               <h3 className="text-base font-bold text-black mb-3">Why this step matters</h3>
               <p className="text-sm text-black leading-relaxed">
                 This is what lets us connect your domain and test forms before launch.
@@ -342,7 +391,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
             type="button"
             onClick={handleFinish}
             disabled={isSaving || !allFieldsComplete}
-            className="rounded-full bg-indigo-600 px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-indigo-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600 hover:shadow-lg transform hover:-translate-y-0.5"
+            className="rounded-full bg-[#8359ee] px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#8359ee]/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#8359ee] hover:shadow-lg transform hover:-translate-y-0.5"
           >
             {isSaving ? 'Saving...' : 'Finish onboarding'}
           </button>

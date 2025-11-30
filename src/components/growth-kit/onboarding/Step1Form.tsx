@@ -186,7 +186,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
             </p>
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
-            <div className="rounded-full bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-800">
+            <div className="rounded-full bg-[#8359ee]/10 px-4 py-2 text-sm font-medium text-[#8359ee]">
               {step.time_estimate}
             </div>
             <div className="text-sm font-semibold text-black">
@@ -203,7 +203,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
           </div>
           <div className="h-3 w-full rounded-full bg-gray-200 overflow-hidden">
             <div
-              className="h-full rounded-full bg-indigo-600 transition-all duration-300"
+              className="h-full rounded-full bg-[#8359ee] transition-all duration-300"
               style={{ width: `${(completedCount / totalRequired) * 100}%` }}
             />
           </div>
@@ -233,7 +233,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                     type="text"
                     value={formData.business_name}
                     onChange={(e) => updateField('business_name', e.target.value)}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                     placeholder="Your business name"
                   />
                   <p className="mt-2 text-sm text-gray-600">
@@ -249,7 +249,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                     type="text"
                     value={formData.name_and_role}
                     onChange={(e) => updateField('name_and_role', e.target.value)}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                     placeholder="For example: Goodness Olawale, Founder"
                   />
                   <p className="mt-2 text-sm text-gray-600">
@@ -264,7 +264,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                   <select
                     value={formData.monthly_revenue_band}
                     onChange={(e) => updateField('monthly_revenue_band', e.target.value)}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   >
                     <option value="">Select revenue band...</option>
                     <option value="Under £10K">Under £10K</option>
@@ -286,7 +286,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                     value={formData.where_operate}
                     onChange={(e) => updateField('where_operate', e.target.value)}
                     rows={3}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="Cities, regions or countries you serve..."
                   />
                   <p className="mt-2 text-sm text-gray-600">
@@ -303,7 +303,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                     value={formData.current_website_url}
                     onChange={(e) => updateField('current_website_url', e.target.value)}
                     placeholder="https://..."
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   />
                 </div>
 
@@ -318,7 +318,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                           type="checkbox"
                           checked={formData.main_channels.includes(channel)}
                           onChange={() => toggleChannel(channel)}
-                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                          className="h-4 w-4 rounded border-gray-300 text-[#8359ee] focus:ring-[#8359ee]"
                         />
                         <span className="text-sm text-black">{channel}</span>
                       </label>
@@ -346,7 +346,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                     type="text"
                     value={formData.offer_name}
                     onChange={(e) => updateField('offer_name', e.target.value)}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                     placeholder="Name of your main offer"
                   />
                 </div>
@@ -359,7 +359,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                     value={formData.who_offer_for}
                     onChange={(e) => updateField('who_offer_for', e.target.value)}
                     rows={3}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="Describe your best fit client for this offer..."
                   />
                   <p className="mt-2 text-sm text-gray-600">
@@ -375,7 +375,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                     value={formData.what_included}
                     onChange={(e) => updateField('what_included', e.target.value)}
                     rows={4}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="Modules, sessions, deliverables, support..."
                   />
                   <p className="mt-2 text-sm text-gray-600">
@@ -394,7 +394,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                           type="checkbox"
                           checked={formData.how_deliver.includes(delivery)}
                           onChange={() => toggleDelivery(delivery)}
-                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                          className="h-4 w-4 rounded border-gray-300 text-[#8359ee] focus:ring-[#8359ee]"
                         />
                         <span className="text-sm text-black">{delivery}</span>
                       </label>
@@ -410,7 +410,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                     type="text"
                     value={formData.typical_timeline}
                     onChange={(e) => updateField('typical_timeline', e.target.value)}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                     placeholder="For example: 12 week programme, 6 month retainer"
                   />
                   <p className="mt-2 text-sm text-gray-600">
@@ -426,7 +426,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                     value={formData.pricing_payment}
                     onChange={(e) => updateField('pricing_payment', e.target.value)}
                     rows={3}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm resize-none"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none"
                     placeholder="Describe pricing and payment options..."
                   />
                 </div>
@@ -438,7 +438,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
                   <select
                     value={formData.how_show_pricing}
                     onChange={(e) => updateField('how_show_pricing', e.target.value)}
-                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none sm:text-sm"
+                    className="block w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-black shadow-sm transition-colors focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm"
                   >
                     <option value="">Select option...</option>
                     <option value="Full prices">Full prices</option>
@@ -452,7 +452,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
 
           {/* Right Column - Guidance */}
           <div className="space-y-6">
-            <div className="rounded-lg bg-blue-50 p-6 border-2 border-blue-100">
+            <div className="rounded-lg bg-[#8359ee]/10 p-6 border-2 border-[#8359ee]/20">
               <h3 className="text-base font-bold text-black mb-3">Why this step matters</h3>
               <p className="text-sm text-black leading-relaxed">
                 This step tells Klaro what we are really selling and who it is for. Once this is done, we can plan your funnel around a single clear offer instead of trying to sell everything at once.
@@ -506,7 +506,7 @@ export default function GrowthKitStep1Form({ project, step }: Step1FormProps) {
             type="button"
             onClick={() => handleSave(true)}
             disabled={isSaving || !isComplete}
-            className="rounded-full bg-indigo-600 px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-indigo-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600 hover:shadow-lg transform hover:-translate-y-0.5"
+            className="rounded-full bg-[#8359ee] px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#8359ee]/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#8359ee] hover:shadow-lg transform hover:-translate-y-0.5"
           >
             {isSaving ? 'Saving...' : 'Save and continue to Step 2'}
           </button>

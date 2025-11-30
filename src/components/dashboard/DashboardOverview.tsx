@@ -52,9 +52,9 @@ function OldDashboardOverview({ project }: DashboardOverviewProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
       ),
-      gradient: 'from-indigo-50 via-indigo-50/50 to-white',
-      borderColor: 'border-indigo-200/60',
-      iconColor: 'text-indigo-600',
+      gradient: 'from-[#8359ee]/10 via-[#8359ee]/5 to-white',
+      borderColor: 'border-[#8359ee]/20',
+      iconColor: 'text-[#8359ee]',
       hover: 'hover:shadow-lg hover:scale-[1.02]',
       progress: project?.onboarding_percent || 0
     },
@@ -114,8 +114,8 @@ function OldDashboardOverview({ project }: DashboardOverviewProps) {
       ),
       gradient: 'from-blue-50 via-blue-50/30 to-white',
       borderColor: 'border-blue-200/50',
-      iconColor: 'text-blue-600',
-      bgColor: 'bg-blue-50/40'
+      iconColor: 'text-[#8359ee]',
+      bgColor: 'bg-[#8359ee]/10/40'
     }
   ]
 
@@ -171,7 +171,7 @@ function OldDashboardOverview({ project }: DashboardOverviewProps) {
                 <div className="mt-4 space-y-2">
                   <div className="h-2 w-full rounded-full bg-white/60 overflow-hidden backdrop-blur-sm">
                     <div
-                      className="h-full rounded-full bg-indigo-600 transition-all duration-500 ease-out"
+                      className="h-full rounded-full bg-[#8359ee] transition-all duration-500 ease-out"
                       style={{ width: `${stat.progress}%` }}
                     />
                   </div>
@@ -223,20 +223,20 @@ function OldDashboardOverview({ project }: DashboardOverviewProps) {
 
         {/* Quick Actions */}
         {project && (
-          <div className="rounded-2xl bg-white border border-indigo-200/50 p-6 shadow-sm animate-in fade-in slide-in-from-bottom-4">
+          <div className="rounded-2xl bg-white border border-[#8359ee]/20 p-6 shadow-sm animate-in fade-in slide-in-from-bottom-4">
             <h2 className="text-lg font-semibold text-black mb-4">Quick Actions</h2>
             <div className="flex flex-wrap gap-3">
               {project.kit_type === 'LAUNCH' ? (
                 <button
                   onClick={() => router.push('/launch-kit')}
-                  className="rounded-full bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-indigo-700 transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
+                  className="rounded-full bg-[#8359ee] px-6 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-[#8359ee]/90 transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
                 >
                   Go to Launch Kit
                 </button>
               ) : (
                 <button
                   onClick={() => router.push('/growth-kit')}
-                  className="rounded-full bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-indigo-700 transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
+                  className="rounded-full bg-[#8359ee] px-6 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-[#8359ee]/90 transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
                 >
                   Go to Growth Kit
                 </button>
@@ -249,7 +249,7 @@ function OldDashboardOverview({ project }: DashboardOverviewProps) {
                       router.push(`/${project.kit_type.toLowerCase()}-kit/onboarding/step-${incompleteStep.step_number}`)
                     }
                   }}
-                  className="rounded-full border-2 border-indigo-200 bg-white px-6 py-2.5 text-sm font-semibold text-indigo-700 hover:bg-indigo-50 transition-all duration-200 hover:border-indigo-300"
+                  className="rounded-full border-2 border-[#8359ee]/20 bg-white px-6 py-2.5 text-sm font-semibold text-[#8359ee] hover:bg-[#8359ee]/10 transition-all duration-200 hover:border-[#8359ee]/30"
                 >
                   Continue Onboarding
                 </button>

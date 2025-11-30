@@ -32,8 +32,8 @@ export default function LaunchKitContent({ project }: LaunchKitContentProps) {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Hero Text */}
-        <div className="mb-8 rounded-lg bg-indigo-50 p-6 border-2 border-indigo-100">
-          <p className="text-lg font-medium text-indigo-900">
+        <div className="mb-8 rounded-lg bg-[#8359ee]/10 p-6 border-2 border-[#8359ee]/20">
+          <p className="text-lg font-medium text-[#8359ee]">
             <strong>Launch Kit:</strong> Klaro will walk you through these steps so we can build your 3 page site in 14 days.
           </p>
         </div>
@@ -57,7 +57,7 @@ export default function LaunchKitContent({ project }: LaunchKitContentProps) {
                     isLocked
                       ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
                       : isActive
-                      ? 'border-indigo-500 bg-indigo-50'
+                      ? 'border-[#8359ee] bg-[#8359ee]/10'
                       : isComplete
                       ? 'border-green-500 bg-green-50'
                       : 'border-gray-200 bg-white hover:border-gray-300'
@@ -80,7 +80,7 @@ export default function LaunchKitContent({ project }: LaunchKitContentProps) {
                           </span>
                         )}
                         {isActive && (
-                          <span className="rounded-full bg-indigo-500 px-2 py-0.5 text-xs text-white">
+                          <span className="rounded-full bg-[#8359ee]/100 px-2 py-0.5 text-xs text-white">
                             Active
                           </span>
                         )}
@@ -116,7 +116,7 @@ export default function LaunchKitContent({ project }: LaunchKitContentProps) {
           </p>
           <Link
             href="/launch-kit/build-tracker"
-            className="inline-flex items-center rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-indigo-700 transition-all"
+            className="inline-flex items-center rounded-lg bg-[#8359ee] px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-[#8359ee]/90 transition-all"
           >
             View Build Tracker
           </Link>

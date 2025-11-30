@@ -173,7 +173,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
             </p>
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
-            <div className="rounded-full bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-800 shadow-sm">
+            <div className="rounded-full bg-[#8359ee]/10 px-4 py-2 text-sm font-medium text-[#8359ee] shadow-sm">
               {step.time_estimate}
             </div>
             <div className="text-sm font-semibold text-black">
@@ -186,11 +186,11 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
         <div className="mb-8 rounded-xl bg-white p-5 shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
           <div className="flex items-center justify-between text-sm font-medium text-black mb-3">
             <span>Step 1 – Tell us who you are</span>
-            <span className="font-semibold text-indigo-600">{Math.round((completedCount / totalRequired) * 100)}%</span>
+            <span className="font-semibold text-[#8359ee]">{Math.round((completedCount / totalRequired) * 100)}%</span>
           </div>
           <div className="h-2.5 w-full rounded-full bg-gray-100 overflow-hidden">
             <div
-              className="h-full rounded-full bg-indigo-600 transition-all duration-500 ease-out shadow-sm"
+              className="h-full rounded-full bg-[#8359ee] transition-all duration-500 ease-out shadow-sm"
               style={{ width: `${(completedCount / totalRequired) * 100}%` }}
             />
           </div>
@@ -220,7 +220,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
                     type="text"
                     value={formData.business_name}
                     onChange={(e) => updateField('business_name', e.target.value)}
-                    className="mt-1 block w-full rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none sm:text-sm hover:border-gray-400"
+                    className="mt-1 block w-full rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm hover:border-gray-400"
                     placeholder="Your business name"
                   />
                   <p className="mt-2 text-sm text-gray-600">
@@ -236,7 +236,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
                     type="text"
                     value={formData.name_and_role}
                     onChange={(e) => updateField('name_and_role', e.target.value)}
-                    className="mt-1 block w-full rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none sm:text-sm hover:border-gray-400"
+                    className="mt-1 block w-full rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm hover:border-gray-400"
                     placeholder="For example: Goodness Olawale, Founder"
                   />
                   <p className="mt-2 text-sm text-gray-600">
@@ -252,7 +252,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
                     type="email"
                     value={formData.contact_email}
                     onChange={(e) => updateField('contact_email', e.target.value)}
-                    className="mt-1 block w-full rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none sm:text-sm hover:border-gray-400"
+                    className="mt-1 block w-full rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm hover:border-gray-400"
                     placeholder="your@email.com"
                   />
                   <p className="mt-2 text-sm text-gray-600">
@@ -268,7 +268,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
                     type="text"
                     value={formData.phone_whatsapp}
                     onChange={(e) => updateField('phone_whatsapp', e.target.value)}
-                    className="mt-1 block w-full rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none sm:text-sm hover:border-gray-400"
+                    className="mt-1 block w-full rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm hover:border-gray-400"
                     placeholder="+1234567890"
                   />
                   <p className="mt-2 text-sm text-gray-600">
@@ -286,7 +286,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
                         <select
                           value={link.platform}
                           onChange={(e) => updateSocialLink(index, 'platform', e.target.value)}
-                          className="block w-40 rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none sm:text-sm hover:border-gray-400"
+                          className="block w-40 rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm hover:border-gray-400"
                         >
                           <option value="">Platform</option>
                           <option value="Instagram">Instagram</option>
@@ -299,7 +299,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
                           type="url"
                           value={link.url}
                           onChange={(e) => updateSocialLink(index, 'url', e.target.value)}
-                          className="flex-1 rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none sm:text-sm hover:border-gray-400"
+                          className="flex-1 rounded-full border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm hover:border-gray-400"
                           placeholder="https://..."
                         />
                         {formData.social_links.length > 1 && (
@@ -317,7 +317,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
                   <button
                     type="button"
                     onClick={addSocialLink}
-                    className="mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors duration-200"
+                    className="mt-3 text-sm font-medium text-[#8359ee] hover:text-[#8359ee]/80 transition-colors duration-200"
                   >
                     + Add another social profile
                   </button>
@@ -343,7 +343,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
                     value={formData.what_you_sell}
                     onChange={(e) => updateField('what_you_sell', e.target.value)}
                     rows={4}
-                    className="mt-1 block w-full rounded-xl border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none sm:text-sm resize-none hover:border-gray-400"
+                    className="mt-1 block w-full rounded-xl border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none hover:border-gray-400"
                     placeholder="Describe what you sell..."
                   />
                 </div>
@@ -356,7 +356,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
                     value={formData.who_is_this_for}
                     onChange={(e) => updateField('who_is_this_for', e.target.value)}
                     rows={4}
-                    className="mt-1 block w-full rounded-xl border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none sm:text-sm resize-none hover:border-gray-400"
+                    className="mt-1 block w-full rounded-xl border border-gray-300 px-4 py-3 text-black bg-white transition-all duration-200 focus:border-[#8359ee] focus:ring-2 focus:ring-[#8359ee]/20 focus:outline-none sm:text-sm resize-none hover:border-gray-400"
                     placeholder="Describe your target audience..."
                   />
                 </div>
@@ -366,7 +366,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
 
           {/* Right Column - Guidance */}
           <div className="space-y-6">
-            <div className="rounded-xl bg-indigo-50 p-6 border border-indigo-100 transition-all duration-300 hover:shadow-sm">
+            <div className="rounded-xl bg-[#8359ee]/10 p-6 border border-[#8359ee]/20 transition-all duration-300 hover:shadow-sm">
               <h3 className="text-base font-bold text-black mb-3">Why this step matters</h3>
               <p className="text-sm text-gray-700 leading-relaxed">
                 These answers help Klaro talk about you in simple language. Once this step is done, we can already start preparing for your brand call.
@@ -387,7 +387,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
                 <li>What you sell</li>
                 <li>Who it is for</li>
               </ul>
-              <p className="text-sm font-semibold text-indigo-600">
+              <p className="text-sm font-semibold text-[#8359ee]">
                 Required fields complete: {completedCount} of {totalRequired}
               </p>
             </div>
@@ -415,7 +415,7 @@ export default function LaunchKitStep1Form({ project, step }: Step1FormProps) {
             type="button"
             onClick={() => handleSave(true)}
             disabled={isSaving || !isComplete}
-            className="rounded-full bg-indigo-600 px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-indigo-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600 hover:shadow-lg transform hover:-translate-y-0.5"
+            className="rounded-full bg-[#8359ee] px-8 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#8359ee]/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#8359ee] hover:shadow-lg transform hover:-translate-y-0.5"
           >
             {isSaving ? 'Saving...' : 'Save and continue to Step 2'}
           </button>

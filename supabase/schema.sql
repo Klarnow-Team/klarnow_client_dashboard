@@ -490,7 +490,7 @@ BEGIN
   
   INSERT INTO phases (project_id, phase_number, phase_id, title, subtitle, day_range)
   VALUES
-    (p_project_id, 4, 'PHASE_4', 'Test & launch', 'We connect domain, test and go live.', 'Days 11-14')
+    (p_project_id, 4, 'PHASE_4', 'Test', 'We connect domain, test and go live.', 'Days 11-14')
   RETURNING id INTO v_phase_4_id;
   
   -- Insert checklist items for Phase 1
@@ -560,7 +560,7 @@ BEGIN
   
   INSERT INTO phases (project_id, phase_number, phase_id, title, subtitle, day_range)
   VALUES
-    (p_project_id, 4, 'PHASE_4', 'Test, launch & handover', 'We test the full journey and go live.', 'Days 11-14')
+    (p_project_id, 4, 'PHASE_4', 'Test & handover', 'We test the full journey and go live.', 'Days 11-14')
   RETURNING id INTO v_phase_4_id;
   
   -- Insert checklist items for Phase 1

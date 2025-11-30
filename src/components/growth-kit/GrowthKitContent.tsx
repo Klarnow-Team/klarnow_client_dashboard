@@ -32,8 +32,8 @@ export default function GrowthKitContent({ project }: GrowthKitContentProps) {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Hero Text */}
-        <div className="mb-8 rounded-lg bg-indigo-50 p-6">
-          <p className="text-lg text-indigo-900">
+        <div className="mb-8 rounded-lg bg-[#8359ee]/10 p-6">
+          <p className="text-lg text-[#8359ee]">
             <strong>Growth Kit:</strong> Klaro will help you set up the pieces we need to build your funnel and emails in 14 days.
           </p>
         </div>
@@ -57,7 +57,7 @@ export default function GrowthKitContent({ project }: GrowthKitContentProps) {
                     isLocked
                       ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
                       : isActive
-                      ? 'border-indigo-500 bg-indigo-50'
+                      ? 'border-[#8359ee] bg-[#8359ee]/10'
                       : isComplete
                       ? 'border-green-500 bg-green-50'
                       : 'border-gray-200 bg-white hover:border-gray-300'
@@ -80,7 +80,7 @@ export default function GrowthKitContent({ project }: GrowthKitContentProps) {
                           </span>
                         )}
                         {isActive && (
-                          <span className="rounded-full bg-indigo-500 px-2 py-0.5 text-xs text-white">
+                          <span className="rounded-full bg-[#8359ee] px-2 py-0.5 text-xs text-white">
                             Active
                           </span>
                         )}
@@ -114,7 +114,7 @@ export default function GrowthKitContent({ project }: GrowthKitContentProps) {
           
           <Link
             href="/growth-kit/build-tracker"
-            className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+            className="inline-flex items-center rounded-md bg-[#8359ee] px-4 py-2 text-sm font-medium text-white hover:bg-[#8359ee]/90"
           >
             View Build Tracker
           </Link>
