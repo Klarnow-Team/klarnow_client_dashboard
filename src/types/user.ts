@@ -16,6 +16,7 @@ export interface UserLookupResponse {
   kit_type?: 'LAUNCH' | 'GROWTH'
   available_kit_types?: ('LAUNCH' | 'GROWTH')[] // All plans associated with this email
   onboarding_finished?: boolean
+  error?: string // Error message when user doesn't exist or other errors occur
   quiz_submission?: {
     id: string
     uuid: string
