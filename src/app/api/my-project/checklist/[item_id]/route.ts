@@ -1,37 +1,30 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
-import { createClient as createAdminClient } from '@supabase/supabase-js'
+import { prisma } from '@/lib/prisma'
+import { getUserFromRequest, getUserIdFromEmail } from '@/utils/auth'
+import { validatePhaseId, validateChecklistLabel } from '@/utils/phase-state'
 
 /**
  * PATCH /api/my-project/checklist/[item_id]
  * Updates a single checklist item's completion status.
+ * Note: item_id is kept for backward compatibility but phase_id and checklist_label should be in body
  * 
  * Authentication: Required (user must be logged in)
  * 
  * Request Body:
  * {
+ *   "phase_id": "PHASE_1",
+ *   "checklist_label": "Onboarding steps completed",
  *   "is_done": true
  * }
- * 
- * Response:
- * {
- *   "checklist_item": { ... },
- *   "message": "Checklist item updated successfully"
- * }
- * 
- * Key Features:
- * - Simple single-item update
- * - Automatic ownership verification
- * - Real-time sync triggers automatically via Supabase Realtime
  */
 export async function PATCH(
   request: Request,
-  { params }: { params: { item_id: string } }
+  { params }: { params: Promise<{ item_id: string }> }
 ) {
   try {
     const body = await request.json()
-    const { is_done } = body
-    const { item_id } = params
+    const { phase_id, checklist_label, is_done } = body
+    const { item_id } = await params
 
     // Validate request body
     if (typeof is_done !== 'boolean') {
@@ -41,129 +34,123 @@ export async function PATCH(
       )
     }
 
-    if (!item_id) {
+    if (!phase_id || !checklist_label) {
       return NextResponse.json(
-        { error: 'Missing checklist item ID' },
+        { error: 'Missing required fields: phase_id and checklist_label' },
         { status: 400 }
       )
     }
 
-    const supabase = await createClient()
+    // Get user from request
+    const { searchParams } = new URL(request.url)
+    const emailParam = searchParams.get('email')
     
-    // Get authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    
-    if (authError || !user) {
+    let userEmail: string | null = null
+    let userId: string | null = null
+
+    const userFromHeaders = await getUserFromRequest()
+    if (userFromHeaders) {
+      userEmail = userFromHeaders.email
+      userId = userFromHeaders.userId
+    } else if (emailParam) {
+      userEmail = emailParam.toLowerCase().trim()
+      userId = getUserIdFromEmail(userEmail)
+    }
+
+    if (!userEmail || !userId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       )
     }
 
-    // Use admin client to bypass RLS for verification
-    const supabaseAdmin = createAdminClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
+    // Find user's client
+    const client = await prisma.client.findFirst({
+      where: {
+        OR: [
+          { userId },
+          { email: userEmail }
+        ]
+      }
+    })
+
+    if (!client) {
+      return NextResponse.json(
+        { error: 'Client not found' },
+        { status: 404 }
+      )
+    }
+
+    // Validate phase_id and checklist_label
+    const kitType = client.plan as 'LAUNCH' | 'GROWTH'
+    if (!validatePhaseId(kitType, phase_id)) {
+      return NextResponse.json(
+        { error: `Invalid phase_id: ${phase_id}` },
+        { status: 400 }
+      )
+    }
+
+    if (!validateChecklistLabel(kitType, phase_id, checklist_label)) {
+      return NextResponse.json(
+        { error: `Invalid checklist_label: ${checklist_label} for phase ${phase_id}` },
+        { status: 400 }
+      )
+    }
+
+    // Fetch current phase state
+    const currentPhaseState = await prisma.clientPhaseState.findUnique({
+      where: {
+        clientId_phaseId: {
+          clientId: client.id,
+          phaseId: phase_id
         }
       }
-    )
+    })
 
-    // First, verify that the checklist item exists and belongs to the user's project
-    const { data: checklistItem, error: itemError } = await supabaseAdmin
-      .from('checklist_items')
-      .select(`
-        id,
-        phase_id,
-        label,
-        is_done,
-        sort_order,
-        created_at,
-        updated_at,
-        phases!inner (
-          id,
-          project_id,
-          projects!inner (
-            id,
-            user_id,
-            email
-          )
-        )
-      `)
-      .eq('id', item_id)
-      .single()
-
-    if (itemError || !checklistItem) {
-      console.error('[API PATCH /api/my-project/checklist] Checklist item not found:', itemError)
-      return NextResponse.json(
-        { error: 'Checklist item not found' },
-        { status: 404 }
-      )
+    // Get or initialize checklist
+    const currentChecklist = (currentPhaseState?.checklist as Record<string, boolean>) || {}
+    const updatedChecklist = {
+      ...currentChecklist,
+      [checklist_label]: is_done
     }
 
-    // Verify ownership: check if the project belongs to the user
-    const project = (checklistItem.phases as any)?.projects
-    if (!project) {
-      console.error('[API PATCH /api/my-project/checklist] Project not found for checklist item')
-      return NextResponse.json(
-        { error: 'Project not found' },
-        { status: 404 }
-      )
+    // Determine if we should update status to IN_PROGRESS
+    const shouldUpdateToInProgress = is_done && 
+      (!currentPhaseState || currentPhaseState.status === 'NOT_STARTED')
+
+    // Upsert phase state
+    const updateData: any = {
+      checklist: updatedChecklist,
+      client: { connect: { id: client.id } }
     }
 
-    // Check ownership by user_id or email
-    const isOwner = 
-      (project.user_id && project.user_id === user.id) ||
-      (project.email && project.email.toLowerCase().trim() === user.email?.toLowerCase().trim())
-
-    if (!isOwner) {
-      console.error('[API PATCH /api/my-project/checklist] User does not own this project:', {
-        project_user_id: project.user_id,
-        user_id: user.id,
-        project_email: project.email,
-        user_email: user.email
-      })
-      return NextResponse.json(
-        { error: 'Forbidden: This checklist item does not belong to your project' },
-        { status: 403 }
-      )
+    if (shouldUpdateToInProgress) {
+      updateData.status = 'IN_PROGRESS'
+      updateData.startedAt = new Date()
     }
 
-    // Update the checklist item
-    const { data: updatedItem, error: updateError } = await supabaseAdmin
-      .from('checklist_items')
-      .update({
-        is_done: is_done,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', item_id)
-      .select()
-      .single()
-
-    if (updateError || !updatedItem) {
-      console.error('[API PATCH /api/my-project/checklist] Error updating checklist item:', updateError)
-      return NextResponse.json(
-        { error: 'Failed to update checklist item' },
-        { status: 500 }
-      )
-    }
-
-    console.log('[API PATCH /api/my-project/checklist] Successfully updated checklist item:', {
-      item_id,
-      is_done,
-      label: updatedItem.label
+    await prisma.clientPhaseState.upsert({
+      where: {
+        clientId_phaseId: {
+          clientId: client.id,
+          phaseId: phase_id
+        }
+      },
+      update: updateData,
+      create: {
+        clientId: client.id,
+        phaseId: phase_id,
+        status: shouldUpdateToInProgress ? 'IN_PROGRESS' : 'NOT_STARTED',
+        checklist: updatedChecklist,
+        startedAt: shouldUpdateToInProgress ? new Date() : null
+      }
     })
 
     return NextResponse.json({
       checklist_item: {
-        id: updatedItem.id,
-        phase_id: updatedItem.phase_id,
-        label: updatedItem.label,
-        sort_order: updatedItem.sort_order,
-        is_done: updatedItem.is_done
+        phase_id,
+        checklist_label,
+        is_done
       },
       message: 'Checklist item updated successfully'
     })

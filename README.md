@@ -6,16 +6,16 @@ A guided onboarding and project tracking system for Klarnow clients. Helps clien
 
 - **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript
-- **Database & Auth:** Supabase
+- **Database:** MySQL (via Prisma ORM)
 - **Styling:** Tailwind CSS
-- **Deployment:** Vercel
+- **Deployment:** Railway
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+ installed
-- Supabase project set up (see configuration below)
+- MySQL database (see PRISMA_SETUP.md)
 
 ### Installation
 
@@ -25,18 +25,17 @@ npm install
 ```
 
 2. Set up environment variables:
-```bash
-cp .env.local.example .env.local
-```
-
-Then update `.env.local` with your Supabase credentials:
+Create a `.env.local` file with:
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+DATABASE_URL="mysql://user:password@host:port/database"
 ```
 
-3. Run the development server:
+3. Run database migrations:
+```bash
+npm run db:migrate
+```
+
+4. Run the development server:
 ```bash
 npm run dev
 ```
@@ -63,10 +62,11 @@ src/
 │   ├── onboarding/             # Onboarding components
 │   └── tracker/                # Build tracker components
 ├── utils/
-│   └── supabase/               # Supabase client utilities
+│   └── auth.ts                 # Authentication utilities
 ├── types/
 │   └── project.ts              # TypeScript type definitions
 ├── lib/
+│   ├── prisma.ts               # Prisma client
 │   └── utils.ts                # Utility functions
 └── hooks/                      # React hooks
 ```

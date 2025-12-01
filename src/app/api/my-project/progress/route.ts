@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
-import { createClient as createAdminClient } from '@supabase/supabase-js'
+import { prisma } from '@/lib/prisma'
+import { getPhaseStructureForKitType, mergePhaseStructureWithState } from '@/lib/phase-structure'
+import { getUserFromRequest, getUserIdFromEmail } from '@/utils/auth'
 
 /**
  * GET /api/my-project/progress
@@ -14,103 +15,83 @@ import { createClient as createAdminClient } from '@supabase/supabase-js'
  * - Current phase information
  * - Next actions
  * - Timeline information
- * 
- * Note: This is optional - progress can also be computed client-side from /api/my-project response
  */
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const supabase = await createClient()
+    // Get user from request
+    const { searchParams } = new URL(request.url)
+    const emailParam = searchParams.get('email')
     
-    // Get authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    
-    if (authError || !user) {
+    let userEmail: string | null = null
+    let userId: string | null = null
+
+    const userFromHeaders = await getUserFromRequest()
+    if (userFromHeaders) {
+      userEmail = userFromHeaders.email
+      userId = userFromHeaders.userId
+    } else if (emailParam) {
+      userEmail = emailParam.toLowerCase().trim()
+      userId = getUserIdFromEmail(userEmail)
+    }
+
+    if (!userEmail || !userId) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized - email required' },
         { status: 401 }
       )
     }
 
-    // Use admin client to bypass RLS
-    const supabaseAdmin = createAdminClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
+    // Find user's client
+    let client = await prisma.client.findFirst({
+      where: {
+        OR: [
+          { userId },
+          { email: userEmail }
+        ]
+      },
+      include: {
+        phaseStates: true
       }
-    )
+    })
 
-    // Find user's project
-    let project = null
-    
-    if (user.id) {
-      const { data: projectByUserId } = await supabaseAdmin
-        .from('projects')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle()
-      
-      if (projectByUserId) {
-        project = projectByUserId
-      }
-    }
-
-    if (!project && user.email) {
-      const emailLower = user.email.toLowerCase().trim()
-      const { data: projectByEmail } = await supabaseAdmin
-        .from('projects')
-        .select('*')
-        .eq('email', emailLower)
-        .maybeSingle()
-      
-      if (projectByEmail) {
-        project = projectByEmail
-      }
-    }
-
-    if (!project) {
+    if (!client) {
       return NextResponse.json(
         { error: 'Project not found' },
         { status: 404 }
       )
     }
 
-    // Fetch phases with checklist items
-    const { data: phasesData } = await supabaseAdmin
-      .from('phases')
-      .select(`
-        id,
-        phase_id,
-        phase_number,
-        title,
-        status,
-        checklist_items (
-          id,
-          is_done
-        )
-      `)
-      .eq('project_id', project.id)
-      .order('phase_number', { ascending: true })
-
-    const phases = phasesData || []
+    // Get phase structure and merge with state
+    const structure = getPhaseStructureForKitType(client.plan as 'LAUNCH' | 'GROWTH')
+    const phasesState: Record<string, any> = {}
+    client.phaseStates.forEach(ps => {
+      phasesState[ps.phaseId] = {
+        status: ps.status,
+        started_at: ps.startedAt?.toISOString() || null,
+        completed_at: ps.completedAt?.toISOString() || null,
+        checklist: ps.checklist || {}
+      }
+    })
+    
+    const mergedPhases = mergePhaseStructureWithState(
+      structure,
+      Object.keys(phasesState).length > 0 ? phasesState : null
+    )
 
     // Calculate overall phase progress
-    const totalPhases = phases.length
-    const completedPhases = phases.filter(p => p.status === 'DONE').length
-    const inProgressPhases = phases.filter(p => p.status === 'IN_PROGRESS').length
-    const notStartedPhases = phases.filter(p => p.status === 'NOT_STARTED').length
+    const totalPhases = mergedPhases.length
+    const completedPhases = mergedPhases.filter(p => p.status === 'DONE').length
+    const inProgressPhases = mergedPhases.filter(p => p.status === 'IN_PROGRESS').length
+    const notStartedPhases = mergedPhases.filter(p => p.status === 'NOT_STARTED').length
     const phaseCompletionPercent = totalPhases > 0 ? Math.round((completedPhases / totalPhases) * 100) : 0
 
     // Calculate checklist progress
     let totalItems = 0
     let completedItems = 0
 
-    phases.forEach((phase: any) => {
-      if (phase.checklist_items) {
-        phase.checklist_items.forEach((item: any) => {
+    mergedPhases.forEach(phase => {
+      if (phase.checklist) {
+        Object.values(phase.checklist).forEach((item: any) => {
           totalItems++
           if (item.is_done) completedItems++
         })
@@ -122,17 +103,17 @@ export async function GET() {
       : 0
 
     // Find current phase
-    const inProgressPhase = phases.find((p: any) => p.status === 'IN_PROGRESS')
-    const waitingPhase = phases.find((p: any) => p.status === 'WAITING_ON_CLIENT')
-    const donePhases = phases.filter((p: any) => p.status === 'DONE')
-      .sort((a: any, b: any) => b.phase_number - a.phase_number)
+    const inProgressPhase = mergedPhases.find(p => p.status === 'IN_PROGRESS')
+    const waitingPhase = mergedPhases.find(p => p.status === 'WAITING_ON_CLIENT')
+    const donePhases = mergedPhases.filter(p => p.status === 'DONE')
+      .sort((a, b) => b.phase_number - a.phase_number)
     
-    let currentPhase = inProgressPhase || waitingPhase || (donePhases.length > 0 ? donePhases[0] : phases[0]) || null
+    const currentPhase = inProgressPhase || waitingPhase || (donePhases.length > 0 ? donePhases[0] : mergedPhases[0]) || null
 
     // Calculate current phase checklist completion
     let currentPhaseChecklistCompletion = null
-    if (currentPhase && currentPhase.checklist_items) {
-      const phaseItems = currentPhase.checklist_items
+    if (currentPhase && currentPhase.checklist) {
+      const phaseItems = Object.values(currentPhase.checklist)
       const phaseCompleted = phaseItems.filter((item: any) => item.is_done).length
       const phaseTotal = phaseItems.length
       const phasePercent = phaseTotal > 0 
@@ -147,7 +128,7 @@ export async function GET() {
     }
 
     // Timeline information
-    const currentDay = project.current_day_of_14 || 0
+    const currentDay = client.currentDayOf14 || 0
     const totalDays = 14
     const daysRemaining = Math.max(0, totalDays - currentDay)
     const timelinePercent = Math.round((currentDay / totalDays) * 100 * 10) / 10
@@ -174,8 +155,8 @@ export async function GET() {
         checklist_completion: currentPhaseChecklistCompletion
       } : null,
       next_actions: {
-        from_us: project.next_from_us,
-        from_you: project.next_from_you
+        from_us: client.nextFromUs,
+        from_you: client.nextFromYou
       },
       timeline: {
         current_day: currentDay,

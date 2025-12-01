@@ -91,8 +91,32 @@ export async function POST(request: Request) {
     })
   } catch (error: any) {
     console.error('User lookup error:', error)
+    console.error('User lookup error stack:', error?.stack)
+    console.error('User lookup error details:', {
+      message: error?.message,
+      code: error?.code,
+      meta: error?.meta,
+      cause: error?.cause
+    })
+    
+    // Handle Prisma connection errors
+    if (error?.code === 'P1001' || error?.code === 'P1017') {
+      console.error('User lookup: Database connection error')
+      return NextResponse.json(
+        { 
+          error: 'Database connection failed',
+          details: process.env.NODE_ENV === 'development' ? 'Please check your DATABASE_URL configuration' : undefined
+        },
+        { status: 503 }
+      )
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: 'Internal server error',
+        details: process.env.NODE_ENV === 'development' ? error?.message : undefined,
+        code: error?.code
+      },
       { status: 500 }
     )
   }

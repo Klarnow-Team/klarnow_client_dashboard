@@ -101,7 +101,7 @@ export async function GET(request: Request) {
     console.log('[API GET /api/my-project] Client found:', {
       id: client.id,
       plan: client.plan,
-      user_id: client.user_id,
+      userId: client.userId,
       onboarding_finished: onboardingFinished
     })
 
@@ -155,8 +155,32 @@ export async function GET(request: Request) {
     })
   } catch (error: any) {
     console.error('[API GET /api/my-project] Error:', error)
+    console.error('[API GET /api/my-project] Error stack:', error?.stack)
+    console.error('[API GET /api/my-project] Error details:', {
+      message: error?.message,
+      code: error?.code,
+      meta: error?.meta,
+      cause: error?.cause
+    })
+    
+    // Handle Prisma connection errors
+    if (error?.code === 'P1001' || error?.code === 'P1017') {
+      console.error('[API GET /api/my-project] Database connection error')
+      return NextResponse.json(
+        { 
+          error: 'Database connection failed',
+          details: process.env.NODE_ENV === 'development' ? 'Please check your DATABASE_URL configuration' : undefined
+        },
+        { status: 503 }
+      )
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error', details: error.message },
+      { 
+        error: 'Internal server error', 
+        details: process.env.NODE_ENV === 'development' ? error?.message : undefined,
+        code: error?.code
+      },
       { status: 500 }
     )
   }

@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
-import { createClient as createServiceClient } from '@supabase/supabase-js'
+import { prisma } from '@/lib/prisma'
+import { getUserFromRequest } from '@/utils/auth'
 
 /**
  * PATCH /api/projects/[project_id]/phases/[phase_id]
  * Update phase status and timestamps.
- * 
- * Authentication: Admin only
  * 
  * Request Body:
  * {
@@ -23,47 +21,20 @@ export async function PATCH(
     const { project_id, phase_id } = await params
     const body = await request.json()
     
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    
+    // Basic auth check
+    const user = await getUserFromRequest()
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if user is admin
-    const { data: admin } = await supabase
-      .from('admins')
-      .select('id')
-      .eq('user_id', user.id)
-      .single()
+    // Validate client exists
+    const client = await prisma.client.findUnique({
+      where: { id: project_id }
+    })
 
-    if (!admin) {
-      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 })
-    }
-
-    // Use service role for full access
-    const supabaseAdmin = createServiceClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
-
-    // Validate phase belongs to project
-    const { data: phase, error: phaseError } = await supabaseAdmin
-      .from('phases')
-      .select('id, project_id')
-      .eq('id', phase_id)
-      .eq('project_id', project_id)
-      .single()
-
-    if (phaseError || !phase) {
+    if (!client) {
       return NextResponse.json(
-        { error: 'Phase not found or does not belong to this project' },
+        { error: 'Project not found' },
         { status: 404 }
       )
     }
@@ -79,60 +50,69 @@ export async function PATCH(
       }
     }
 
+    // Get current phase state
+    const currentPhaseState = await prisma.clientPhaseState.findUnique({
+      where: {
+        clientId_phaseId: {
+          clientId: project_id,
+          phaseId: phase_id
+        }
+      }
+    })
+
     // Prepare update data
-    const updateData: any = {
-      updated_at: new Date().toISOString()
-    }
+    const updateData: any = {}
 
     if (body.status !== undefined) {
       updateData.status = body.status
       
       // Auto-update timestamps based on status
       if (body.status === 'IN_PROGRESS' && !body.started_at) {
-        // Check if phase hasn't been started yet
-        const { data: currentPhase } = await supabaseAdmin
-          .from('phases')
-          .select('started_at')
-          .eq('id', phase_id)
-          .single()
-        
-        if (!currentPhase?.started_at) {
-          updateData.started_at = new Date().toISOString()
+        if (!currentPhaseState?.startedAt) {
+          updateData.startedAt = new Date()
         }
       } else if (body.status === 'DONE' && !body.completed_at) {
-        updateData.completed_at = new Date().toISOString()
+        updateData.completedAt = new Date()
       } else if (body.status === 'NOT_STARTED') {
-        updateData.started_at = null
-        updateData.completed_at = null
+        updateData.startedAt = null
+        updateData.completedAt = null
       }
     }
 
     // Allow manual override of timestamps
     if (body.started_at !== undefined) {
-      updateData.started_at = body.started_at
+      updateData.startedAt = body.started_at ? new Date(body.started_at) : null
     }
     if (body.completed_at !== undefined) {
-      updateData.completed_at = body.completed_at
+      updateData.completedAt = body.completed_at ? new Date(body.completed_at) : null
     }
 
-    // Update phase
-    const { data: updatedPhase, error: updateError } = await supabaseAdmin
-      .from('phases')
-      .update(updateData)
-      .eq('id', phase_id)
-      .select()
-      .single()
-
-    if (updateError) {
-      console.error('Error updating phase:', updateError)
-      return NextResponse.json(
-        { error: 'Failed to update phase' },
-        { status: 500 }
-      )
-    }
+    // Upsert phase state
+    const updatedPhaseState = await prisma.clientPhaseState.upsert({
+      where: {
+        clientId_phaseId: {
+          clientId: project_id,
+          phaseId: phase_id
+        }
+      },
+      update: updateData,
+      create: {
+        clientId: project_id,
+        phaseId: phase_id,
+        status: body.status || 'NOT_STARTED',
+        checklist: {},
+        startedAt: body.started_at ? new Date(body.started_at) : (body.status === 'IN_PROGRESS' ? new Date() : null),
+        completedAt: body.completed_at ? new Date(body.completed_at) : (body.status === 'DONE' ? new Date() : null)
+      }
+    })
 
     return NextResponse.json({
-      phase: updatedPhase,
+      phase: {
+        phase_id: updatedPhaseState.phaseId,
+        status: updatedPhaseState.status,
+        started_at: updatedPhaseState.startedAt?.toISOString() || null,
+        completed_at: updatedPhaseState.completedAt?.toISOString() || null
+      },
       message: 'Phase updated successfully'
     })
   } catch (error: any) {

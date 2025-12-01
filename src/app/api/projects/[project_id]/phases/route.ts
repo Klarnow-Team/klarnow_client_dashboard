@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
-import { createClient as createServiceClient } from '@supabase/supabase-js'
+import { prisma } from '@/lib/prisma'
+import { getUserFromRequest } from '@/utils/auth'
+import { getPhaseStructureForKitType, mergePhaseStructureWithState } from '@/lib/phase-structure'
 
 /**
  * GET /api/projects/[project_id]/phases
- * Fetches all phases for a specific project with checklist items and links.
- * 
- * Authentication: Admin only
+ * Fetches all phases for a specific project with checklist items.
  */
 export async function GET(
   request: Request,
@@ -14,66 +13,47 @@ export async function GET(
 ) {
   try {
     const { project_id } = await params
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
     
+    // Basic auth check
+    const user = await getUserFromRequest()
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if user is admin
-    const { data: admin } = await supabase
-      .from('admins')
-      .select('id')
-      .eq('user_id', user.id)
-      .single()
-
-    if (!admin) {
-      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 })
-    }
-
-    // Use service role for full access
-    const supabaseAdmin = createServiceClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
+    // Fetch client
+    const client = await prisma.client.findUnique({
+      where: { id: project_id },
+      include: {
+        phaseStates: true
       }
-    )
+    })
 
-    // Fetch phases with checklist items and links
-    const { data: phases, error: phasesError } = await supabaseAdmin
-      .from('phases')
-      .select(`
-        *,
-        checklist_items (*),
-        phase_links (*)
-      `)
-      .eq('project_id', project_id)
-      .order('phase_number', { ascending: true })
-
-    if (phasesError) {
-      console.error('Error fetching phases:', phasesError)
+    if (!client) {
       return NextResponse.json(
-        { error: 'Failed to fetch phases' },
-        { status: 500 }
+        { error: 'Project not found' },
+        { status: 404 }
       )
     }
 
-    // Sort checklist items and links by sort_order
-    const phasesWithSortedData = phases?.map(phase => ({
-      ...phase,
-      checklist_items: phase.checklist_items
-        ?.sort((a, b) => a.sort_order - b.sort_order) || [],
-      phase_links: phase.phase_links
-        ?.sort((a, b) => a.sort_order - b.sort_order) || []
-    }))
+    // Generate phases from structure merged with state
+    const structure = getPhaseStructureForKitType(client.plan as 'LAUNCH' | 'GROWTH')
+    const phasesState: Record<string, any> = {}
+    client.phaseStates.forEach(ps => {
+      phasesState[ps.phaseId] = {
+        status: ps.status,
+        started_at: ps.startedAt?.toISOString() || null,
+        completed_at: ps.completedAt?.toISOString() || null,
+        checklist: ps.checklist || {}
+      }
+    })
+    
+    const mergedPhases = mergePhaseStructureWithState(
+      structure,
+      Object.keys(phasesState).length > 0 ? phasesState : null
+    )
 
     return NextResponse.json({
-      phases: phasesWithSortedData || [],
+      phases: mergedPhases,
       project_id
     })
   } catch (error: any) {

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
-import { createClient as createServiceClient } from '@supabase/supabase-js'
+import { prisma } from '@/lib/prisma'
+import { getUserFromRequest } from '@/utils/auth'
 
 /**
  * GET /api/quiz-submissions/[uuid]
@@ -12,113 +12,80 @@ export async function GET(
 ) {
   try {
     const { uuid } = await params
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
     
+    // Basic auth check
+    const user = await getUserFromRequest()
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if user is admin
-    const { data: admin } = await supabase
-      .from('admins')
-      .select('id')
-      .eq('user_id', user.id)
-      .single()
-
-    if (!admin) {
-      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 })
-    }
-
-    // Use service role for full access
-    const supabaseAdmin = createServiceClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
-
     // Fetch quiz submission by UUID
-    const { data: submission, error: submissionError } = await supabaseAdmin
-      .from('quiz_submissions')
-      .select('*')
-      .eq('id', uuid)
-      .single()
+    const submission = await prisma.quizSubmission.findUnique({
+      where: { id: uuid }
+    })
 
-    if (submissionError || !submission) {
+    if (!submission) {
       return NextResponse.json(
         { error: 'Quiz submission not found' },
         { status: 404 }
       )
     }
 
-    // Fetch user details by email
     const email = submission.email.toLowerCase().trim()
-    
-    // Check if user exists in auth.users
-    const { data: { users } } = await supabaseAdmin.auth.admin.listUsers()
-    const authUser = users?.find(u => u.email?.toLowerCase() === email)
 
-    // Fetch user profile
-    const { data: profile } = await supabaseAdmin
-      .from('user_profiles')
-      .select('*')
-      .eq('email', email)
-      .single()
+    // Fetch client if exists
+    const client = await prisma.client.findFirst({
+      where: {
+        email: email
+      },
+      include: {
+        phaseStates: true,
+        onboardingAnswer: true
+      }
+    })
 
-    // Fetch project if user exists
-    let project = null
-    let projectDetails = null
-    
-    if (authUser) {
-      const { data: projectData } = await supabaseAdmin
-        .from('projects')
-        .select(`
-          *,
-          onboarding_steps (*),
-          phases (
-            *,
-            checklist_items (*),
-            phase_links (*)
-          )
-        `)
-        .eq('user_id', authUser.id)
-        .single()
-      
-      project = projectData
-    }
-
-    // Fetch all quiz submissions for this email (to see submission history)
-    const { data: allSubmissions } = await supabaseAdmin
-      .from('quiz_submissions')
-      .select('*')
-      .eq('email', email)
-      .order('created_at', { ascending: false })
+    // Fetch all quiz submissions for this email
+    const allSubmissions = await prisma.quizSubmission.findMany({
+      where: { email: email },
+      orderBy: { createdAt: 'desc' }
+    })
 
     return NextResponse.json({
       submission: {
-        ...submission,
-        uuid: submission.id
+        id: submission.id,
+        uuid: submission.id,
+        email: submission.email,
+        full_name: submission.fullName,
+        phone_number: submission.phoneNumber,
+        brand_name: submission.brandName,
+        logo_status: submission.logoStatus,
+        brand_goals: submission.brandGoals,
+        online_presence: submission.onlinePresence,
+        audience: submission.audience,
+        brand_style: submission.brandStyle,
+        timeline: submission.timeline,
+        preferred_kit: submission.preferredKit,
+        created_at: submission.createdAt.toISOString(),
+        updated_at: submission.updatedAt.toISOString()
       },
-      user: authUser ? {
-        id: authUser.id,
-        email: authUser.email,
-        created_at: authUser.created_at,
-        last_sign_in_at: authUser.last_sign_in_at,
-        metadata: authUser.user_metadata
+      project: client ? {
+        id: client.id,
+        email: client.email,
+        plan: client.plan,
+        onboarding_percent: client.onboardingPercent,
+        next_from_us: client.nextFromUs,
+        next_from_you: client.nextFromYou,
+        current_day_of_14: client.currentDayOf14
       } : null,
-      profile: profile || null,
-      project: project || null,
-      submission_history: allSubmissions || [],
+      submission_history: allSubmissions.map(s => ({
+        id: s.id,
+        email: s.email,
+        preferred_kit: s.preferredKit,
+        created_at: s.createdAt.toISOString()
+      })),
       summary: {
-        has_account: !!authUser,
-        has_profile: !!profile,
-        has_project: !!project,
-        total_submissions: allSubmissions?.length || 0
+        has_project: !!client,
+        total_submissions: allSubmissions.length
       }
     })
   } catch (error: any) {

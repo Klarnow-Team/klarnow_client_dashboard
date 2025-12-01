@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
-import { createClient as createServiceClient } from '@supabase/supabase-js'
+import { prisma } from '@/lib/prisma'
+import { getUserFromRequest } from '@/utils/auth'
 
 /**
  * PATCH /api/projects/[project_id]
- * Update project fields (current_day_of_14, next_from_us, next_from_you).
- * 
- * Authentication: Admin only
+ * Update client fields (current_day_of_14, next_from_us, next_from_you).
  * 
  * Request Body:
  * {
@@ -23,44 +21,18 @@ export async function PATCH(
     const { project_id } = await params
     const body = await request.json()
     
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    
+    // Basic auth check
+    const user = await getUserFromRequest()
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if user is admin
-    const { data: admin } = await supabase
-      .from('admins')
-      .select('id')
-      .eq('user_id', user.id)
-      .single()
+    // Validate client exists
+    const client = await prisma.client.findUnique({
+      where: { id: project_id }
+    })
 
-    if (!admin) {
-      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 })
-    }
-
-    // Use service role for full access
-    const supabaseAdmin = createServiceClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
-
-    // Validate project exists
-    const { data: project, error: projectError } = await supabaseAdmin
-      .from('projects')
-      .select('id')
-      .eq('id', project_id)
-      .single()
-
-    if (projectError || !project) {
+    if (!client) {
       return NextResponse.json(
         { error: 'Project not found' },
         { status: 404 }
@@ -79,38 +51,38 @@ export async function PATCH(
     }
 
     // Prepare update data
-    const updateData: any = {
-      updated_at: new Date().toISOString()
-    }
+    const updateData: any = {}
 
     if (body.current_day_of_14 !== undefined) {
-      updateData.current_day_of_14 = body.current_day_of_14
+      updateData.currentDayOf14 = body.current_day_of_14
     }
     if (body.next_from_us !== undefined) {
-      updateData.next_from_us = body.next_from_us
+      updateData.nextFromUs = body.next_from_us
     }
     if (body.next_from_you !== undefined) {
-      updateData.next_from_you = body.next_from_you
+      updateData.nextFromYou = body.next_from_you
     }
 
-    // Update project
-    const { data: updatedProject, error: updateError } = await supabaseAdmin
-      .from('projects')
-      .update(updateData)
-      .eq('id', project_id)
-      .select()
-      .single()
-
-    if (updateError) {
-      console.error('Error updating project:', updateError)
-      return NextResponse.json(
-        { error: 'Failed to update project' },
-        { status: 500 }
-      )
-    }
+    // Update client
+    const updatedClient = await prisma.client.update({
+      where: { id: project_id },
+      data: updateData
+    })
 
     return NextResponse.json({
-      project: updatedProject,
+      project: {
+        id: updatedClient.id,
+        user_id: updatedClient.userId,
+        email: updatedClient.email,
+        kit_type: updatedClient.plan,
+        current_day_of_14: updatedClient.currentDayOf14,
+        next_from_us: updatedClient.nextFromUs,
+        next_from_you: updatedClient.nextFromYou,
+        onboarding_finished: updatedClient.onboardingPercent === 100,
+        onboarding_percent: updatedClient.onboardingPercent,
+        created_at: updatedClient.createdAt.toISOString(),
+        updated_at: updatedClient.updatedAt.toISOString()
+      },
       message: 'Project updated successfully'
     })
   } catch (error: any) {
