@@ -96,10 +96,10 @@ export default function EmailLoginFlow() {
     
     // Determine kit type: prefer selectedKitType, then preferred_kit, then userData.kit_type
     // Also check the Select value in case selectedKitType state is not updated
-    let kitType = selectedKitType
+    let kitType: KitType = selectedKitType
     
     // If selectedKitType is empty, try to get it from preferred_kit
-    if (!kitType || kitType === '') {
+    if (!kitType) {
       if (userData.quiz_submission?.preferred_kit) {
         kitType = userData.quiz_submission.preferred_kit.toUpperCase().trim() as 'LAUNCH' | 'GROWTH'
       } else if (userData.kit_type) {
@@ -107,7 +107,7 @@ export default function EmailLoginFlow() {
       }
     }
     
-    if (!kitType || kitType === '') {
+    if (!kitType) {
       setError('Please select a plan to continue.')
       setIsLoading(false)
       return
