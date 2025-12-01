@@ -6,7 +6,7 @@
  * Only status and checklist completion are stored in the database (phases_state JSONB).
  */
 
-import { KitType } from '@/types/project'
+import { KitType, MergedPhase } from '@/types/project'
 
 export interface PhaseStructure {
   phase_id: string
@@ -26,16 +26,6 @@ export interface PhaseState {
   started_at?: string | null
   completed_at?: string | null
   checklist: Record<string, boolean> // { "label": true/false }
-}
-
-export interface MergedPhase extends PhaseStructure {
-  status: PhaseState['status']
-  started_at: string | null
-  completed_at: string | null
-  checklist: Array<{
-    label: string
-    is_done: boolean
-  }>
 }
 
 // Launch Kit Phase Structure
