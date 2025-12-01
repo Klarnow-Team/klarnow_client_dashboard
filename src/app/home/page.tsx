@@ -5,10 +5,8 @@ import { useRouter } from 'next/navigation'
 import { useMockAuth } from '@/hooks/useMockAuth'
 import { useRealtimeProject } from '@/hooks/useRealtimeProject'
 import DashboardLayout from '@/components/layout/DashboardLayout'
-import ProjectOverview from '@/components/client-dashboard/ProjectOverview'
 import PhaseCard from '@/components/client-dashboard/PhaseCard'
 import ExpandedPhaseDetails from '@/components/client-dashboard/ExpandedPhaseDetails'
-import { ProjectWithRelations, Phase, ChecklistItem } from '@/types/project'
 import { MergedPhase } from '@/types/project'
 
 export default function HomePage() {
@@ -144,30 +142,8 @@ export default function HomePage() {
     )
   }
 
-  // Transform Phase[] to MergedPhase[] for components that expect MergedPhase
-  // This is a temporary adapter until all components are updated
-  const phases: MergedPhase[] = (project.phases || []).map((phase: Phase) => {
-    const checklistItems = phase.checklist_items || phase.checklist || []
-    return {
-      phase_id: phase.phase_id,
-      phase_number: phase.phase_number,
-      title: phase.title,
-      subtitle: phase.subtitle || null,
-      day_range: phase.day_range,
-      status: phase.status,
-      started_at: phase.started_at,
-      completed_at: phase.completed_at,
-      checklist: checklistItems.map((item: ChecklistItem | any) => ({
-        label: item.label,
-        is_done: item.is_done || false,
-        id: item.id // Keep ID for updates
-      })),
-      links: (phase.phase_links || phase.links || []).map((link: any) => ({
-        label: link.label,
-        url: link.url || '#'
-      }))
-    }
-  })
+  // Project already has MergedPhase[] from the API, no transformation needed
+  const phases: MergedPhase[] = project.phases || []
 
   return (
     <DashboardLayout>
