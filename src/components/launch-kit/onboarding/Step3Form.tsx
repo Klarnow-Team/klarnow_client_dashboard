@@ -78,7 +78,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
           // Pre-fill all matching fields from quiz submission
           // Use merge utility to ensure prefilled data overwrites empty strings
           setFormData(prev => {
-            const merged = mergeQuizDataWithFormData(prev, mappedFields, true)
+            const merged = mergeQuizDataWithFormData(prev, mappedFields, true) as FormData
             console.log('[Step3] Pre-filled form fields from quiz submission:', {
               mappedFields: Object.keys(mappedFields),
               mergedFields: Object.keys(merged)
@@ -147,7 +147,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
             const quizSubmission = await fetchQuizSubmission(quizSubmissionId, userEmail)
             if (quizSubmission) {
               const mappedFields = mapQuizToStep3Fields(quizSubmission, kitType)
-              allFields = mergeQuizDataWithFormData(allFields, mappedFields, true)
+              allFields = mergeQuizDataWithFormData(allFields, mappedFields, true) as FormData
               console.log('[Step3] Re-merged quiz data before saving')
             }
           }
@@ -242,7 +242,7 @@ export default function LaunchKitStep3Form({ project, step }: Step3FormProps) {
                 }
                 
                 // Merge quiz data to ensure all prefilled fields are included
-                completeFields = mergeQuizDataWithFormData(completeFields, mappedFields, true)
+                completeFields = mergeQuizDataWithFormData(completeFields, mappedFields, true) as Record<string, any>
               }
               
               console.log(`[Step3] Sending step ${s.step_number} with ${Object.keys(completeFields).length} fields:`, Object.keys(completeFields))

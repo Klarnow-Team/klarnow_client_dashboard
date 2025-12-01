@@ -110,7 +110,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
           // Pre-fill all matching fields from quiz submission
           // Use merge utility to ensure prefilled data overwrites empty strings
           setFormData(prev => {
-            const merged = mergeQuizDataWithFormData(prev, mappedFields, true)
+            const merged = mergeQuizDataWithFormData(prev, mappedFields, true) as FormData
             console.log('[Growth Step2] Pre-filled form fields from quiz submission:', {
               mappedFields: Object.keys(mappedFields),
               mergedFields: Object.keys(merged)
@@ -229,7 +229,7 @@ export default function GrowthKitStep2Form({ project, step }: Step2FormProps) {
             const quizSubmission = await fetchQuizSubmission(quizSubmissionId, userEmail)
             if (quizSubmission) {
               const mappedFields = mapQuizToStep2Fields(quizSubmission, kitType)
-              allFields = mergeQuizDataWithFormData(allFields, mappedFields, true)
+              allFields = mergeQuizDataWithFormData(allFields, mappedFields, true) as FormData
               console.log('[Growth Step2] Re-merged quiz data before saving')
             }
           }

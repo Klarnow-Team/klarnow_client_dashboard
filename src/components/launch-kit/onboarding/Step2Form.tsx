@@ -194,7 +194,7 @@ export default function LaunchKitStep2Form({ project, step }: Step2FormProps) {
             const quizSubmission = await fetchQuizSubmission(quizSubmissionId, userEmail)
             if (quizSubmission) {
               const mappedFields = mapQuizToStep2Fields(quizSubmission, kitType)
-              allFields = mergeQuizDataWithFormData(allFields, mappedFields, true)
+              allFields = mergeQuizDataWithFormData(allFields, mappedFields, true) as FormData
               console.log('[Step2] Re-merged quiz data before saving')
             }
           }
