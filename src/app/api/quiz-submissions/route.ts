@@ -84,15 +84,15 @@ export async function POST(request: Request) {
 
     const submission = await prisma.quizSubmission.create({
       data: {
-        fullName,
+        fullName: full_name,
         email: emailLower,
         phoneNumber: phone_number || null,
-        brandName,
-        logoStatus,
+        brandName: brand_name,
+        logoStatus: logo_status,
         brandGoals: brand_goals || [],
-        onlinePresence,
+        onlinePresence: online_presence,
         audience: audience || [],
-        brandStyle,
+        brandStyle: brand_style,
         timeline,
         preferredKit: preferredKit && (preferredKit === 'LAUNCH' || preferredKit === 'GROWTH') ? preferredKit : null
       }
