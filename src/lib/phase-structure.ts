@@ -51,7 +51,7 @@ const LAUNCH_KIT_PHASES: PhaseStructure[] = [
     checklist: [
       'Draft homepage copy ready',
       'Draft offer / services page ready',
-      'Draft contact/about copy ready',
+      'Draft contact / about copy ready',
       'You reviewed and approved copy'
     ],
     links: [
